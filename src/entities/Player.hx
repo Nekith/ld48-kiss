@@ -102,7 +102,7 @@ class Player extends AEntity
     {
         if (true == scene.click) {
             if (0 < ammo && false == this._wasFiring) {
-                ammo--;
+                --ammo;
                 this._wasFiring = true;
                 var projectile : GoodProjectile = new GoodProjectile(position, angle);
                 scene.addEntity(projectile);
@@ -112,7 +112,7 @@ class Player extends AEntity
             this._wasFiring = false;
         }
         if (30 > ammo && true == scene.keys[Keyboard.P]) {
-            ammo++;
+            ++ammo;
         }
     }
     

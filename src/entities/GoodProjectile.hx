@@ -6,6 +6,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import scenes.AScene;
 import entities.AEntity;
+import entities.Wall;
 import entities.Player;
 
 class GoodProjectile extends AEntity
@@ -38,8 +39,12 @@ class GoodProjectile extends AEntity
         else {
             var entities : Array<AEntity> = scene.findEntities(rect);
             for (e in entities) {
-                if (true == Std.is(e, Player)) {
-                    continue;
+                if (true == Std.is(e, Wall)) {
+                    var w : Wall = cast(e, Wall);
+                    w.takeHit(scene);
+                    scene.removeEntity(this);
+                    this.clean();
+                    break;
                 }
             }
         }

@@ -20,11 +20,27 @@ class Wall extends AEntity
         health = 3;
     }
     
+    public function takeHit(scene : AScene) : Void
+    {
+        --health;
+        if (0 >= health) {
+            scene.removeEntity(this);
+            clean();
+        }
+    }
     public override function draw(scene : AScene) : Void
     {
         var g : Graphics = this._figures.graphics;
         g.clear();
-        g.beginFill(0x808080);
+        if (3 == health) {
+            g.beginFill(0x909090);
+        }
+        else if (2 == health) {
+            g.beginFill(0x707070);
+        }
+        else if (1 == health) {
+            g.beginFill(0x505050);
+        }
         g.drawRect(0, 0, 40, 40);
     }
     

@@ -9,7 +9,6 @@ Ludum Dare 26 entry, ok, let's do this !
 
 ## Todo
 
-* destroy wall
 * display health
 * pop mobs
 * kill mob
