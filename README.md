@@ -9,7 +9,6 @@ Ludum Dare 26 entry, ok, let's do this !
 
 ## Todo
 
-* display background
 * fill level
 * end score screen
 * first screen

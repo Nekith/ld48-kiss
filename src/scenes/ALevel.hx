@@ -1,7 +1,5 @@
 package scenes;
 
-import haxe.Resource;
-import haxe.xml.Fast;
 import flash.geom.Rectangle;
 import flash.geom.Point;
 import flash.utils.ByteArray;
@@ -20,46 +18,15 @@ class ALevel extends AScene
     public var player(default, null) : Player;
     public var entities(default, null) : Array<AEntity>;
     
-    public function new(byteArray : ByteArray)
+    public function new()
     {
         super();
-        entities = [];
         director = new Director();
-        var xml : Xml = Xml.parse(byteArray.toString());
-        var level : Fast = new Fast(xml.elementsNamed("level").next());
-        var items : Fast = new Fast(xml.elementsNamed("items").next());
-        var start = level.node.start;
-        dimension.x = Std.parseFloat(level.att.x);
-        dimension.y = Std.parseFloat(level.att.y);
-        player = new Player(new Point(Std.parseFloat(start.att.x), Std.parseFloat(start.att.y)));
+        dimension = new Point(1200, 1200);
+        player = new Player(new Point(600.0, 600.0));
         addChild(player);
-        for (item in items.nodes.item) {
-            var imax : Int = 1;
-            var jmax : Int = 1;
-            if (true == item.has.repeatx) {
-                imax = Std.parseInt(item.att.repeatx);
-            }
-            if (true == item.has.repeaty) {
-                jmax = Std.parseInt(item.att.repeaty);
-            }
-            for (i in 0...imax) {
-                for (j in 0...jmax) {
-                    if ("wall" == item.att.type) {
-                        var wall : Wall = new Wall(new Point(Std.parseFloat(item.att.x) + 40 * i, Std.parseFloat(item.att.y) + 40 * j));
-                        addChild(wall);
-                        entities.push(wall);
-                    }
-                    else if ("turret" == item.att.type) {
-                        var turret : Turret = new Turret(new Point(Std.parseFloat(item.att.x) + 40 * i, Std.parseFloat(item.att.y) + 40 * j));
-                        addChild(turret);
-                        entities.push(turret);
-                    }
-                }
-            }
-        }
-        var ammo : Ammo = new Ammo(new Point(400, 400));
-        addChild(ammo);
-        entities.push(ammo);
+        entities = [];
+        director.init(this);
     }
     
     public function findEntities(rect : Rectangle) : Array<AEntity>

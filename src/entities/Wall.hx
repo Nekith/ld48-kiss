@@ -9,12 +9,15 @@ import entities.AEntity;
 
 class Wall extends AEntity
 {
+    static inline public var WIDTH : Int = 40;
+    static inline public var HEIGHT : Int  = 40;
+    
     public var health(default, null) : Int;
     private var _figures : Shape;
     
     public function new(position : Point)
     {
-        super(new Rectangle(position.x - 20, position.y - 20, 40, 40));
+        super(new Rectangle(position.x - Wall.WIDTH / 2, position.y - Wall.HEIGHT / 2, Wall.WIDTH, Wall.HEIGHT));
         this._figures = new Shape();
         addChild(this._figures);
         health = 3;
@@ -26,6 +29,7 @@ class Wall extends AEntity
         if (0 >= health) {
             scene.director.score += 1;
             scene.removeEntity(this);
+            scene.addEntity(new Ammo(position));
             clean();
         }
     }

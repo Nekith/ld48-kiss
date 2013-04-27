@@ -5,6 +5,7 @@ import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.Turret;
 import entities.Dog;
+import entities.Wall;
 import entities.Ammo;
 
 class Director
@@ -22,18 +23,39 @@ class Director
         this._lastPopAmmo = 0;
     }
     
+    public function init(scene : ALevel)
+    {
+        var i : Int = 0;
+        while (i < 30) {
+            var p : Point = new Point(Std.random(Std.int(scene.dimension.x)), Std.random(Std.int(scene.dimension.y)));
+            if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Wall.WIDTH / 2, p.y - Wall.HEIGHT / 2, Wall.WIDTH, Wall.HEIGHT))) {
+                var w : Wall = new Wall(p);
+                scene.addEntity(w);
+                ++i;
+            }
+        }
+    }
+    
     public function update(scene : ALevel)
     {
         level = 1 + Math.floor(score / 10);
         if (50 > scene.entities.length) {
             this._evil += level;
-            // mob
+            // entity
             while (500 <= this._evil) {
                 var p : Point = getRandomFreePoint(scene);
-                if (0 == Std.random(2)) {
+                var rand : Int = Std.random(5);
+                if (1 >= rand) {
                     if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Turret.WIDTH / 2, p.y - Turret.HEIGHT / 2, Turret.WIDTH, Turret.HEIGHT))) {
                         var t : Turret = new Turret(p);
                         scene.addEntity(t);
+                        this._evil -= 100;
+                    }
+                }
+                else if (3 >= rand) {
+                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Wall.WIDTH / 2, p.y - Wall.HEIGHT / 2, Wall.WIDTH, Wall.HEIGHT))) {
+                        var w : Wall = new Wall(p);
+                        scene.addEntity(w);
                         this._evil -= 100;
                     }
                 }
