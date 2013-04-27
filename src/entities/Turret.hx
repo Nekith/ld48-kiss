@@ -7,9 +7,8 @@ import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
 
-class Wall extends AEntity
+class Turret extends AEntity
 {
-    public var health(default, null) : Int;
     private var _figures : Shape;
     
     public function new(position : Point)
@@ -17,31 +16,24 @@ class Wall extends AEntity
         super(new Rectangle(position.x - 20, position.y - 20, 40, 40));
         this._figures = new Shape();
         addChild(this._figures);
-        health = 3;
     }
     
     public function takeHit(scene : ALevel) : Void
     {
-        --health;
-        if (0 >= health) {
-            scene.removeEntity(this);
-            clean();
-        }
+        scene.removeEntity(this);
+        clean();
     }
+    
     public override function draw(scene : ALevel) : Void
     {
+        super.draw(scene);
+        this._figures.rotation = Math.atan2(scene.player.position.y - position.y, scene.player.position.x - position.x) * 180.0 / Math.PI;
         var g : Graphics = this._figures.graphics;
         g.clear();
-        if (3 == health) {
-            g.beginFill(0x909090);
-        }
-        else if (2 == health) {
-            g.beginFill(0x707070);
-        }
-        else if (1 == health) {
-            g.beginFill(0x505050);
-        }
+        g.beginFill(0xF53D54);
         g.drawRect(-20, -20, 40, 40);
+        g.beginFill(0xF53D54);
+        g.drawRect(20, -15, 15, 15);
     }
     
     public override function clean() : Void

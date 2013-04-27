@@ -10,7 +10,6 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.events.KeyboardEvent;
 import flash.Lib;
-import entities.AEntity;
 
 class AScene extends Sprite
 {
@@ -20,7 +19,6 @@ class AScene extends Sprite
     public var mouse(default, null) : Point;
     public var click(default, null) : Bool;
     public var keys(default, null) : Array<Bool>;
-    public var entities(default, null) : Array<AEntity>;
     
     public function new()
     {
@@ -37,30 +35,6 @@ class AScene extends Sprite
         mouse = new Point(0, 0);
         click = false;
         keys = [];
-        entities = [];
-    }
-    
-    public function findEntities(rect : Rectangle) : Array<AEntity>
-    {
-        var results : Array<AEntity> = new Array<AEntity>();
-        for (entity in entities) {
-            if (true == rect.intersects(entity.rect)) {
-                results.push(entity);
-            }
-        }
-        return results;
-    }
-    
-    public function addEntity(entity : AEntity) : Void
-    {
-        addChild(entity);
-        entities.push(entity);
-    }
-    
-    public function removeEntity(entity : AEntity) : Void
-    {
-        removeChild(entity);
-        entities.remove(entity);
     }
     
     public function onKeyDown(event : KeyboardEvent) : Void
@@ -115,23 +89,14 @@ class AScene extends Sprite
     
     public function update() : AScene
     {
-        for (entity in entities) {
-            entity.update(this);
-        }
         return this;
     }
     
     public function draw() : Void
     {
-        for (entity in entities) {
-            entity.draw(this);
-        }
     }
     
     public function clean() : Void
     {
-        for (entity in entities) {
-            entity.clean();
-        }
     }
 }

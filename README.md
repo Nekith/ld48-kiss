@@ -9,9 +9,9 @@ Ludum Dare 26 entry, ok, let's do this !
 
 ## Todo
 
-* display health
 * pop mobs
-* kill mob
 * mob kills us
-* pick ammo
+* mob kills walls
 * track score
+* display background
+* fill level

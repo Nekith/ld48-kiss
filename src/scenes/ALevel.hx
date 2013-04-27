@@ -6,17 +6,25 @@ import flash.geom.Rectangle;
 import flash.geom.Point;
 import flash.utils.ByteArray;
 import flash.Lib;
+import scenes.Director;
 import entities.AEntity;
 import entities.Player;
 import entities.Wall;
+import entities.Turret;
+
+import entities.Ammo;
 
 class ALevel extends AScene
 {
+    public var director(default, null) : Director;
     public var player(default, null) : Player;
+    public var entities(default, null) : Array<AEntity>;
     
     public function new(byteArray : ByteArray)
     {
         super();
+        entities = [];
+        director = new Director();
         var xml : Xml = Xml.parse(byteArray.toString());
         var level : Fast = new Fast(xml.elementsNamed("level").next());
         var items : Fast = new Fast(xml.elementsNamed("items").next());
@@ -41,15 +49,58 @@ class ALevel extends AScene
                         addChild(wall);
                         entities.push(wall);
                     }
+                    else if ("turret" == item.att.type) {
+                        var turret : Turret = new Turret(new Point(Std.parseFloat(item.att.x) + 40 * i, Std.parseFloat(item.att.y) + 40 * j));
+                        addChild(turret);
+                        entities.push(turret);
+                    }
                 }
             }
         }
+        var ammo : Ammo = new Ammo(new Point(400, 400));
+        addChild(ammo);
+        entities.push(ammo);
+    }
+    
+    public function findEntities(rect : Rectangle) : Array<AEntity>
+    {
+        var results : Array<AEntity> = new Array<AEntity>();
+        for (entity in entities) {
+            if (true == rect.intersects(entity.rect)) {
+                results.push(entity);
+            }
+        }
+        return results;
+    }
+    
+    public function checkPlaceIsFree(rect : Rectangle) : Bool
+    {
+        for (entity in entities) {
+            if (true == rect.intersects(entity.rect)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public function addEntity(entity : AEntity) : Void
+    {
+        addChild(entity);
+        entities.push(entity);
+    }
+    
+    public function removeEntity(entity : AEntity) : Void
+    {
+        removeChild(entity);
+        entities.remove(entity);
     }
     
     public override function update() : AScene
     {
         player.update(this);
-        super.update();
+        for (entity in entities) {
+            entity.update(this);
+        }
         x = 400 - player.rect.x + player.rect.width / 2;
         if (x > 0) {
             x = 0;
@@ -64,12 +115,17 @@ class ALevel extends AScene
         else if (y - 600 < -dimension.y) {
             y = -dimension.y + 600;
         }
+        director.update(this);
+        super.update();
         return this;
     }
     
     public override function draw() : Void
     {
         player.draw(this);
+        for (entity in entities) {
+            entity.draw(this);
+        }
         super.draw();
     }
     
@@ -77,6 +133,9 @@ class ALevel extends AScene
     {
         removeChild(player);
         player.clean();
+        for (entity in entities) {
+            entity.clean();
+        }
         super.clean();
     }
 }

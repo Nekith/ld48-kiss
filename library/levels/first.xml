@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <level x="1200" y="1200">
-    <start x="50" y="50"/>
+    <start x="600" y="600"/>
 </level>
 <items>
-    <item type="wall" x="0" y="0" repeatx="2" />
+    <item type="wall" x="120" y="100" repeatx="2" />
     <item type="wall" x="200" y="100" repeaty="5" />
+    <item type="turret" x="500" y="200" />
+    <item type="turret" x="200" y="700" />
 </items>

@@ -4,10 +4,11 @@ import flash.display.Shape;
 import flash.display.Graphics;
 import flash.geom.Point;
 import flash.geom.Rectangle;
-import scenes.AScene;
+import scenes.ALevel;
 import entities.AEntity;
-import entities.Wall;
 import entities.Player;
+import entities.Wall;
+import entities.Turret;
 
 class GoodProjectile extends AEntity
 {
@@ -15,7 +16,7 @@ class GoodProjectile extends AEntity
     
     public function new(position : Point, angle : Float)
     {
-        super(new Rectangle(position.x, position.y, 10, 10));
+        super(new Rectangle(position.x - 5, position.y - 5, 10, 10));
         _canEscapeLevel = true;
         force.x = Math.cos(angle) * 17;
         force.y = Math.sin(angle) * 17;
@@ -27,27 +28,36 @@ class GoodProjectile extends AEntity
         addChild(this._figures);
     }
     
-    public override function update(scene : AScene) : Void
+    public override function update(scene : ALevel) : Void
     {
-        position.x += force.x;
-        position.y += force.y;
-        super.update(scene);
         if (rect.x + rect.width <= 0 || rect.x >= scene.dimension.x || rect.y + rect.height <= 0 || rect.y >= scene.dimension.y) {
             scene.removeEntity(this);
             this.clean();
         }
         else {
-            var entities : Array<AEntity> = scene.findEntities(rect);
-            for (e in entities) {
-                if (true == Std.is(e, Wall)) {
-                    var w : Wall = cast(e, Wall);
-                    w.takeHit(scene);
-                    scene.removeEntity(this);
-                    this.clean();
-                    break;
+            for (i in 1...6) {
+                var entities : Array<AEntity> = scene.findEntities(new Rectangle(rect.x + force.x / 6 * i, rect.y + force.y / 6 * i, rect.width, rect.height));
+                for (e in entities) {
+                    if (true == Std.is(e, Wall)) {
+                        var w : Wall = cast(e, Wall);
+                        w.takeHit(scene);
+                        scene.removeEntity(this);
+                        this.clean();
+                        return;
+                    }
+                    if (true == Std.is(e, Turret)) {
+                        var t : Turret = cast(e, Turret);
+                        t.takeHit(scene);
+                        scene.removeEntity(this);
+                        this.clean();
+                        return;
+                    }
                 }
             }
         }
+        position.x += force.x;
+        position.y += force.y;
+        super.update(scene);
     }
     
     public override function clean() : Void

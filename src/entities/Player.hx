@@ -5,7 +5,7 @@ import flash.display.Graphics;
 import flash.geom.Rectangle;
 import flash.geom.Point;
 import flash.ui.Keyboard;
-import scenes.AScene;
+import scenes.ALevel;
 import entities.AEntity;
 import entities.Wall;
 import entities.GoodProjectile;
@@ -20,8 +20,7 @@ class Player extends AEntity
     
     public function new(position : Point)
     {
-        var rect : Rectangle = new Rectangle(position.x - 16, position.y - 16, 32, 32);
-        super(rect);
+        super(new Rectangle(position.x - 16, position.y - 16, 32, 32));
         health = 7;
         ammo = 15;
         angle = 0;
@@ -34,7 +33,7 @@ class Player extends AEntity
      *                    UPDATE
      **********************************************************************************************/
     
-    public override function update(scene : AScene) : Void
+    public override function update(scene : ALevel) : Void
     {
         _movement(scene);
         super.update(scene);
@@ -47,7 +46,7 @@ class Player extends AEntity
         super.update(scene);
     }
     
-    private function _movement(scene : AScene) : Void
+    private function _movement(scene : ALevel) : Void
     {
         var speed : Int = 7 - Std.int(ammo / 5);
         if (true == scene.keys[Keyboard.D] || true == scene.keys[Keyboard.RIGHT]) {
@@ -72,11 +71,11 @@ class Player extends AEntity
         position.y += force.y;
     }
     
-    private function _collision(scene : AScene) : Void
+    private function _collision(scene : ALevel) : Void
     {
         var entities : Array<AEntity> = scene.findEntities(rect);
         for (e in entities) {
-            if (true == Std.is(e, GoodProjectile)) {
+            if (true == Std.is(e, GoodProjectile) || true == Std.is(e, Ammo)) {
                 continue;
             }
             if (Math.abs(e.position.x - position.x) < Math.abs(e.position.y - position.y)) {
@@ -98,13 +97,13 @@ class Player extends AEntity
         }
     }
     
-    private function _fire(scene : AScene) : Void
+    private function _fire(scene : ALevel) : Void
     {
         if (true == scene.click) {
             if (0 < ammo && false == this._wasFiring) {
                 --ammo;
                 this._wasFiring = true;
-                var projectile : GoodProjectile = new GoodProjectile(position, angle);
+                var projectile : GoodProjectile = new GoodProjectile(new Point(position.x - 4, position.y), angle);
                 scene.addEntity(projectile);
             }
         }
@@ -114,24 +113,45 @@ class Player extends AEntity
         if (30 > ammo && true == scene.keys[Keyboard.P]) {
             ++ammo;
         }
+        if (true == scene.keys[Keyboard.K]) {
+            health = Std.random(5);
+        }
+    }
+    
+    public function takeHit(scene : ALevel) : Void
+    {
+        --health;
+    }
+    
+    public function pickAmmo(scene : ALevel) : Bool
+    {
+        if (30 <= ammo) {
+            return false;
+        }
+        ++ammo;
+        return true;
     }
     
     /**********************************************************************************************
      *                    DRAW
      **********************************************************************************************/
     
-    public override function draw(scene : AScene) : Void
+    public override function draw(scene : ALevel) : Void
     {
         super.draw(scene);
-        this._figures.x = position.x - rect.x;
-        this._figures.y = position.y - rect.y;
         this._figures.rotation = (this.angle + Math.PI / 2) * 180.0 / Math.PI;
         var g : Graphics = this._figures.graphics;
         g.clear();
-        g.beginFill(0x00A19A);
+        g.beginFill(0x00BFB7);
         g.drawCircle(0, 0, 5 + ammo);
-        g.beginFill(0x00A19A);
-        g.drawRect(-1 - ammo / 10, -10 - ammo, 4 + ammo / 5, 10);
+        g.beginFill(0x00BFB7);
+        g.drawRect((3 > ammo ? -2 : - ammo / 5), -15 - ammo, 4 + ammo / 5, 15);
+        // draw health
+        var alpha : Float = Math.PI / 6;
+        for (i in 0...health) {
+            g.beginFill(0x00BFB7);
+            g.drawCircle(Math.cos(alpha * i) * (10 + ammo), Math.sin(alpha * i) * (10 + ammo), 3);
+        }
     }
     
     /**********************************************************************************************

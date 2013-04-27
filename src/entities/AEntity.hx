@@ -4,7 +4,7 @@ import flash.display.Sprite;
 import flash.geom.Rectangle;
 import flash.geom.Point;
 import flash.Lib;
-import scenes.AScene;
+import scenes.ALevel;
 
 class AEntity extends Sprite
 {
@@ -24,7 +24,7 @@ class AEntity extends Sprite
         _canEscapeLevel = false;
     }
     
-    public function update(scene : AScene) : Void
+    public function update(scene : ALevel) : Void
     {
         rect.x = position.x - rect.width / 2;
         rect.y = position.y - rect.height / 2;
@@ -46,10 +46,10 @@ class AEntity extends Sprite
         }
     }
     
-    public function draw(scene : AScene) : Void
+    public function draw(scene : ALevel) : Void
     {
-        x = rect.x;
-        y = rect.y;
+        x = position.x;
+        y = position.y;
     }
     
     public function clean() : Void
