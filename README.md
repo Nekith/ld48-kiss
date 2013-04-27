@@ -1,3 +1,8 @@
-# Ludum Dare 26 entry
+# Keep It Simple, Shooter !
 
-Ok, let's do this !
+Ludum Dare 26 entry, ok, let's do this !
+
+## Going technical
+
+* Haxe
+* Only Flash is targeted

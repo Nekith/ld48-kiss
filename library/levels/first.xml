@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<level x="2000" y="2000">
+    <start x="50" y="50"/>
+</level>
+<items>
+    <item type="wall" x="0" y="0" />
+    <item type="wall" x="32" y="0" />
+</items>
