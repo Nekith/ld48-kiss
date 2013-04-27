@@ -9,8 +9,9 @@ Ludum Dare 26 entry, ok, let's do this !
 
 ## Todo
 
-* fill level
 * end score screen
 * first screen
+* dying animation, scaling to 0 ?
 
+* poping animation ?
 * other power ups ? health ? invincibility ? machine gun ?

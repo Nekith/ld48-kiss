@@ -5,12 +5,9 @@ import flash.geom.Point;
 import flash.utils.ByteArray;
 import flash.Lib;
 import scenes.Director;
+import scenes.ScoreScreen;
 import entities.AEntity;
 import entities.Player;
-import entities.Wall;
-import entities.Turret;
-
-import entities.Ammo;
 
 class ALevel extends AScene
 {
@@ -65,6 +62,9 @@ class ALevel extends AScene
     public override function update() : AScene
     {
         player.update(this);
+        if (0 == player.health) {
+            return new ScoreScreen(director.score);
+        }
         for (entity in entities) {
             entity.update(this);
         }
