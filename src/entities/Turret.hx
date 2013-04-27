@@ -20,7 +20,7 @@ class Turret extends AEntity
     
     public function new(position : Point)
     {
-        super(new Rectangle(position.x - 20, position.y - 20, Turret.WIDTH, Turret.HEIGHT));
+        super(new Rectangle(position.x - Turret.WIDTH / 2, position.y - Turret.HEIGHT / 2, Turret.WIDTH, Turret.HEIGHT));
         this._figures = new Shape();
         addChild(this._figures);
         this._lastFire = 0;
@@ -29,6 +29,7 @@ class Turret extends AEntity
     
     public function takeHit(scene : ALevel) : Void
     {
+        scene.director.score += 1;
         scene.removeEntity(this);
         scene.addEntity(new Ammo(position));
         clean();

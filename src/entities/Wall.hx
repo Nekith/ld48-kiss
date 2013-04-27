@@ -24,6 +24,7 @@ class Wall extends AEntity
     {
         --health;
         if (0 >= health) {
+            scene.director.score += 1;
             scene.removeEntity(this);
             clean();
         }

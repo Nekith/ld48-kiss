@@ -9,6 +9,7 @@ import entities.AEntity;
 import entities.Player;
 import entities.Wall;
 import entities.Turret;
+import entities.Dog;
 
 class GoodProjectile extends AEntity
 {
@@ -48,6 +49,13 @@ class GoodProjectile extends AEntity
                     if (true == Std.is(e, Turret)) {
                         var t : Turret = cast(e, Turret);
                         t.takeHit(scene);
+                        scene.removeEntity(this);
+                        this.clean();
+                        return;
+                    }
+                    if (true == Std.is(e, Dog)) {
+                        var d : Dog = cast(e, Dog);
+                        d.takeHit(scene);
                         scene.removeEntity(this);
                         this.clean();
                         return;

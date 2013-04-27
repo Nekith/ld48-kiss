@@ -9,11 +9,9 @@ Ludum Dare 26 entry, ok, let's do this !
 
 ## Todo
 
-* track score
-* add dogs
 * display background
 * fill level
 * end score screen
 * first screen
 
-* other power ups ? health ? invicibility ?
+* other power ups ? health ? invincibility ? machine gun ?

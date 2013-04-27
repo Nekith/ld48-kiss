@@ -17,8 +17,8 @@ class BadProjectile extends AEntity
     {
         super(new Rectangle(position.x, position.y, 10, 10));
         _canEscapeLevel = true;
-        force.x = Math.cos(angle) * 5;
-        force.y = Math.sin(angle) * 5;
+        force.x = Math.cos(angle) * 4;
+        force.y = Math.sin(angle) * 4;
         this._figures = new Shape();
         var g : Graphics = this._figures.graphics;
         g.clear();

@@ -4,56 +4,65 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.Turret;
+import entities.Dog;
 import entities.Ammo;
 
 class Director
 {
+    public var score(default, default) : Int;
     public var level(default, null) : Int;
-    private var _time : Int;
     private var _evil : Int;
     private var _lastPopAmmo : Int;
     
     public function new()
     {
+        score = 0;
         level = 0;
-        this._time = 0;
         this._evil = 0;
         this._lastPopAmmo = 0;
     }
     
     public function update(scene : ALevel)
     {
-        if (0 == _time % 2400) {
-            ++level;
-        }
-        this._evil += level;
-        // mob
-        while (500 <= this._evil) {
-            var p : Point = getRandomFreePoint(scene);
-            if (true == scene.checkPlaceIsFree(new Rectangle(p.x, p.y, Turret.WIDTH, Turret.HEIGHT))) {
-                var t : Turret = new Turret(p);
-                scene.addEntity(t);
-                this._evil -= 100;
-            }
-        }
-        // ammo
-        if (300 <= this._lastPopAmmo) {
-            var imax : Int = Std.random(3) + 1;
-            var i : Int = 0;
-            while (i < imax) {
+        level = 1 + Math.floor(score / 10);
+        if (50 > scene.entities.length) {
+            this._evil += level;
+            // mob
+            while (500 <= this._evil) {
                 var p : Point = getRandomFreePoint(scene);
-                if (true == scene.checkPlaceIsFree(new Rectangle(p.x, p.y, Ammo.WIDTH, Ammo.HEIGHT))) {
-                    var a : Ammo = new Ammo(p);
-                    scene.addEntity(a);
-                    ++i;
+                if (0 == Std.random(2)) {
+                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Turret.WIDTH / 2, p.y - Turret.HEIGHT / 2, Turret.WIDTH, Turret.HEIGHT))) {
+                        var t : Turret = new Turret(p);
+                        scene.addEntity(t);
+                        this._evil -= 100;
+                    }
+                }
+                else {
+                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Dog.WIDTH / 2, p.y - Dog.HEIGHT / 2, Dog.WIDTH, Dog.HEIGHT))) {
+                        var d : Dog = new Dog(p);
+                        scene.addEntity(d);
+                        this._evil -= 100;
+                    }
                 }
             }
-            this._lastPopAmmo = 0;
+            // ammo
+            if (300 <= this._lastPopAmmo) {
+                var imax : Int = Std.random(3) + 1;
+                var i : Int = 0;
+                while (i < imax) {
+                    var p : Point = getRandomFreePoint(scene);
+                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Ammo.WIDTH / 2, p.y - Ammo.HEIGHT / 2, Ammo.WIDTH, Ammo.HEIGHT))) {
+                        var a : Ammo = new Ammo(p);
+                        scene.addEntity(a);
+                        ++i;
+                    }
+                }
+                this._lastPopAmmo = 0;
+            }
+            else {
+                ++this._lastPopAmmo;
+            }
         }
-        else {
-            ++this._lastPopAmmo;
-        }
-        ++this._time;
     }
     
     public function getRandomFreePoint(scene : ALevel) : Point
