@@ -9,9 +9,11 @@ Ludum Dare 26 entry, ok, let's do this !
 
 ## Todo
 
-* pop mobs
 * mob kills us
 * mob kills walls
 * track score
+* add dogs
 * display background
 * fill level
+* end score screen
+* first screen

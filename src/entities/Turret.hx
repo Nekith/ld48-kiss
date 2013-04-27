@@ -6,14 +6,18 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
+import entities.Ammo;
 
 class Turret extends AEntity
 {
+    static inline public var WIDTH : Int = 40;
+    static inline public var HEIGHT : Int  = 40;
+    
     private var _figures : Shape;
     
     public function new(position : Point)
     {
-        super(new Rectangle(position.x - 20, position.y - 20, 40, 40));
+        super(new Rectangle(position.x - 20, position.y - 20, Turret.WIDTH, Turret.HEIGHT));
         this._figures = new Shape();
         addChild(this._figures);
     }
@@ -21,6 +25,7 @@ class Turret extends AEntity
     public function takeHit(scene : ALevel) : Void
     {
         scene.removeEntity(this);
+        scene.addEntity(new Ammo(position));
         clean();
     }
     
