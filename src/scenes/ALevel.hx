@@ -26,10 +26,22 @@ class ALevel extends AScene
         player = new Player(new Point(Std.parseFloat(start.att.x), Std.parseFloat(start.att.y)));
         addChild(player);
         for (item in items.nodes.item) {
-            if ("wall" == item.att.type) {
-                var wall : Wall = new Wall(new Point(Std.parseFloat(item.att.x), Std.parseFloat(item.att.y)));
-                addChild(wall);
-                entities.push(wall);
+            var imax : Int = 1;
+            var jmax : Int = 1;
+            if (true == item.has.repeatx) {
+                imax = Std.parseInt(item.att.repeatx);
+            }
+            if (true == item.has.repeaty) {
+                jmax = Std.parseInt(item.att.repeaty);
+            }
+            for (i in 0...imax) {
+                for (j in 0...jmax) {
+                    if ("wall" == item.att.type) {
+                        var wall : Wall = new Wall(new Point(Std.parseFloat(item.att.x) + 40 * i, Std.parseFloat(item.att.y) + 40 * j));
+                        addChild(wall);
+                        entities.push(wall);
+                    }
+                }
             }
         }
     }
@@ -57,7 +69,7 @@ class ALevel extends AScene
     
     public override function draw() : Void
     {
-        player.draw();
+        player.draw(this);
         super.draw();
     }
     
