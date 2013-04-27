@@ -27,7 +27,7 @@ class Ammo extends AEntity
         g.beginFill(0x04BF9D);
         g.drawRect(-5, -5, 10, 10);
         addChild(this._figures);
-        _angle = 0;
+        this._angle = 0;
     }
     
     public override function update(scene : ALevel) : Void
@@ -35,6 +35,7 @@ class Ammo extends AEntity
         position.x += force.x;
         position.y += force.y;
         super.update(scene);
+        this._angle = (this._angle + 3 % 360);
         if (rect.x + rect.width <= 0 || rect.x >= scene.dimension.x || rect.y + rect.height <= 0 || rect.y >= scene.dimension.y) {
             scene.removeEntity(this);
             this.clean();
@@ -51,8 +52,7 @@ class Ammo extends AEntity
     
     public override function draw(scene : ALevel) : Void
     {
-        _angle = (_angle + 3 % 360);
-        this._figures.rotation = _angle;
+        this._figures.rotation = this._angle;
         super.draw(scene);
     }
     

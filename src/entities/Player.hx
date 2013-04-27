@@ -9,6 +9,7 @@ import scenes.ALevel;
 import entities.AEntity;
 import entities.Wall;
 import entities.GoodProjectile;
+import entities.BadProjectile;
 
 class Player extends AEntity
 {
@@ -21,7 +22,7 @@ class Player extends AEntity
     public function new(position : Point)
     {
         super(new Rectangle(position.x - 16, position.y - 16, 32, 32));
-        health = 7;
+        health = 6;
         ammo = 15;
         angle = 0;
         this._wasFiring = false;
@@ -75,7 +76,7 @@ class Player extends AEntity
     {
         var entities : Array<AEntity> = scene.findEntities(rect);
         for (e in entities) {
-            if (true == Std.is(e, GoodProjectile) || true == Std.is(e, Ammo)) {
+            if (true == Std.is(e, GoodProjectile) || true == Std.is(e, BadProjectile) || true == Std.is(e, Ammo)) {
                 continue;
             }
             if (Math.abs(e.position.x - position.x) < Math.abs(e.position.y - position.y)) {
@@ -147,10 +148,9 @@ class Player extends AEntity
         g.beginFill(0x00BFB7);
         g.drawRect((3 > ammo ? -2 : - ammo / 5), -15 - ammo, 4 + ammo / 5, 15);
         // draw health
-        var alpha : Float = Math.PI / 6;
-        for (i in 0...health) {
+        for (i in 0...health - 1) {
             g.beginFill(0x00BFB7);
-            g.drawCircle(Math.cos(alpha * i) * (10 + ammo), Math.sin(alpha * i) * (10 + ammo), 3);
+            g.drawCircle(Math.cos(Math.PI / 6 * i) * (10 + ammo), Math.sin(Math.PI / 6 * i) * (10 + ammo), 3);
         }
     }
     

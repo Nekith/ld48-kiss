@@ -18,8 +18,8 @@ class AEntity extends Sprite
         super();
         this.rect = rect;
         this.position = new Point(rect.x + rect.width / 2, rect.y + rect.height / 2);
-        x = rect.x;
-        y = rect.y;
+        x = position.x;
+        y = position.y;
         force = new Point(0, 0);
         _canEscapeLevel = false;
     }

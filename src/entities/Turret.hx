@@ -7,6 +7,7 @@ import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
 import entities.Ammo;
+import entities.BadProjectile;
 
 class Turret extends AEntity
 {
@@ -14,12 +15,16 @@ class Turret extends AEntity
     static inline public var HEIGHT : Int  = 40;
     
     private var _figures : Shape;
+    private var _angle : Float;
+    private var _lastFire : Int;
     
     public function new(position : Point)
     {
         super(new Rectangle(position.x - 20, position.y - 20, Turret.WIDTH, Turret.HEIGHT));
         this._figures = new Shape();
         addChild(this._figures);
+        this._lastFire = 0;
+        this._angle = 0;
     }
     
     public function takeHit(scene : ALevel) : Void
@@ -29,10 +34,26 @@ class Turret extends AEntity
         clean();
     }
     
+    public override function update(scene : ALevel) : Void
+    {
+        position.x += force.x;
+        position.y += force.y;
+        super.update(scene);
+        this._angle = Math.atan2(scene.player.position.y - position.y, scene.player.position.x - position.x);
+        if (120 == this._lastFire) {
+            var projectile : BadProjectile = new BadProjectile(new Point(position.x + 15, position.y - 20), _angle);
+            scene.addEntity(projectile);
+            this._lastFire = 0;
+        }
+        else {
+            ++this._lastFire;
+        }
+    }
+    
     public override function draw(scene : ALevel) : Void
     {
         super.draw(scene);
-        this._figures.rotation = Math.atan2(scene.player.position.y - position.y, scene.player.position.x - position.x) * 180.0 / Math.PI;
+        this._figures.rotation = _angle * 180.0 / Math.PI;
         var g : Graphics = this._figures.graphics;
         g.clear();
         g.beginFill(0xF53D54);

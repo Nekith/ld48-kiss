@@ -34,6 +34,12 @@ class BadProjectile extends AEntity
             this.clean();
         }
         else {
+            if (true == scene.player.rect.intersects(rect)) {
+                scene.player.takeHit(scene);
+                scene.removeEntity(this);
+                this.clean();
+                return;
+            }
             for (i in 1...6) {
                 var entities : Array<AEntity> = scene.findEntities(new Rectangle(rect.x + force.x / 6 * i, rect.y + force.y / 6 * i, rect.width, rect.height));
                 for (e in entities) {
@@ -42,14 +48,7 @@ class BadProjectile extends AEntity
                         w.takeHit(scene);
                         scene.removeEntity(this);
                         this.clean();
-                        break;
-                    }
-                    if (true == Std.is(e, Player)) {
-                        var p : Player = cast(e, Player);
-                        p.takeHit(scene);
-                        scene.removeEntity(this);
-                        this.clean();
-                        break;
+                        return;
                     }
                 }
             }

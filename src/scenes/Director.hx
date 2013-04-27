@@ -8,38 +8,36 @@ import entities.Ammo;
 
 class Director
 {
+    public var level(default, null) : Int;
     private var _time : Int;
-    private var _level : Int;
     private var _evil : Int;
-    private var _lastPopMob : Int;
     private var _lastPopAmmo : Int;
     
     public function new()
     {
-        _time = 0;
-        _level = 0;
-        _evil = 0;
-        _lastPopMob = 0;
-        _lastPopAmmo = 0;
+        level = 0;
+        this._time = 0;
+        this._evil = 0;
+        this._lastPopAmmo = 0;
     }
     
     public function update(scene : ALevel)
     {
-        if (0 == _time % 1200) {
-            ++_level;
+        if (0 == _time % 2400) {
+            ++level;
         }
-        _evil += _level;
+        this._evil += level;
         // mob
-        while (150 <= _evil) {
+        while (500 <= this._evil) {
             var p : Point = getRandomFreePoint(scene);
             if (true == scene.checkPlaceIsFree(new Rectangle(p.x, p.y, Turret.WIDTH, Turret.HEIGHT))) {
                 var t : Turret = new Turret(p);
                 scene.addEntity(t);
-                _evil -= 100;
+                this._evil -= 100;
             }
         }
         // ammo
-        if (600 <= _lastPopAmmo) {
+        if (300 <= this._lastPopAmmo) {
             var imax : Int = Std.random(3) + 1;
             var i : Int = 0;
             while (i < imax) {
@@ -50,12 +48,12 @@ class Director
                     ++i;
                 }
             }
-            _lastPopAmmo = 0;
+            this._lastPopAmmo = 0;
         }
         else {
-            ++_lastPopAmmo;
+            ++this._lastPopAmmo;
         }
-        ++_time;
+        ++this._time;
     }
     
     public function getRandomFreePoint(scene : ALevel) : Point
