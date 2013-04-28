@@ -52,7 +52,7 @@ class Player extends AEntity
     
     private function _movement(scene : ALevel) : Void
     {
-        var speed : Int = 7 - Std.int(ammo / 5);
+        var speed : Int = Std.int(Math.max(1.0, 6.0 - ammo / 5.0));
         if (true == scene.keys[Keyboard.D] || true == scene.keys[Keyboard.RIGHT]) {
             force.x = speed;
         }

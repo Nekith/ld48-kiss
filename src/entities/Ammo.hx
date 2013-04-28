@@ -16,6 +16,7 @@ class Ammo extends AEntity
     
     private var _figures : Shape;
     private var _angle : Float;
+    private var _count : Int;
     
     public function new(position : Point)
     {
@@ -29,6 +30,7 @@ class Ammo extends AEntity
         g.drawRect(-5, -5, 10, 10);
         addChild(this._figures);
         this._angle = 0;
+        this._count = 0;
     }
     
     public override function update(scene : ALevel) : Void
@@ -38,6 +40,12 @@ class Ammo extends AEntity
         super.update(scene);
         this._angle = (this._angle + 3 % 360);
         if (false == dying) {
+            ++this._count;
+            if (1200 == this._count) {
+                scene.removeEntity(this);
+                this.clean();
+                return;
+            }
             if (rect.x + rect.width <= 0 || rect.x >= scene.dimension.x || rect.y + rect.height <= 0 || rect.y >= scene.dimension.y) {
                 scene.removeEntity(this);
                 this.clean();

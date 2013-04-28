@@ -7,6 +7,7 @@ import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
 import entities.Wall;
+import entities.GoodProjectile;
 import entities.Player;
 
 class BadProjectile extends AEntity
@@ -46,6 +47,11 @@ class BadProjectile extends AEntity
                     if (true == Std.is(e, Wall)) {
                         var w : Wall = cast(e, Wall);
                         w.takeHit(scene);
+                        scene.removeEntity(this);
+                        this.clean();
+                        return;
+                    }
+                    if (true == Std.is(e, GoodProjectile)) {
                         scene.removeEntity(this);
                         this.clean();
                         return;

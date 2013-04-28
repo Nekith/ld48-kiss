@@ -39,51 +39,61 @@ class Director
     
     public function update(scene : ALevel)
     {
-        level = 1 + Math.floor(score / 18);
-        if (30 > evilCount) {
+        level = 1 + Math.floor(score / 20);
+        if (25 > evilCount) {
             this._evil += level;
-            // entity
-            while (150 <= this._evil) {
-                var p : Point = getRandomFreePoint(scene);
-                var rand : Int = Std.random(8);
-                if (2 >= rand) {
-                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Turret.WIDTH / 2, p.y - Turret.HEIGHT / 2, Turret.WIDTH, Turret.HEIGHT))) {
-                        var t : Turret = new Turret(p);
-                        scene.addEntity(t);
-                        this._evil -= 150;
-                        ++evilCount;
-                    }
+        }
+        while (150 <= this._evil) {
+            var p : Point = getRandomFreePoint(scene);
+            var rand : Int = Std.random(8);
+            if (2 >= rand) {
+                if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Turret.WIDTH / 2, p.y - Turret.HEIGHT / 2, Turret.WIDTH, Turret.HEIGHT))) {
+                    var t : Turret = new Turret(p);
+                    scene.addEntity(t);
+                    this._evil -= 150;
+                    ++evilCount;
                 }
-                else if (4 >= rand) {
-                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Wall.WIDTH / 2, p.y - Wall.HEIGHT / 2, Wall.WIDTH, Wall.HEIGHT))) {
-                        var w : Wall = new Wall(p);
-                        scene.addEntity(w);
-                        this._evil -= 100;
-                    }
+            }
+            else if (4 >= rand) {
+                if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Wall.WIDTH / 2, p.y - Wall.HEIGHT / 2, Wall.WIDTH, Wall.HEIGHT))) {
+                    var w : Wall = new Wall(p);
+                    scene.addEntity(w);
+                    this._evil -= 100;
                 }
-                else if (6 >= rand) {
-                    if (0 == Std.random(4)) {
-                        if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Health.WIDTH / 2, p.y - Health.HEIGHT / 2, Health.WIDTH, Health.HEIGHT))) {
-                            var h : Health = new Health(p);
-                            scene.addEntity(h);
-                        }
-                    }
-                    else {
-                        if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Ammo.WIDTH / 2, p.y - Ammo.HEIGHT / 2, Ammo.WIDTH, Ammo.HEIGHT))) {
-                            var a : Ammo = new Ammo(p);
-                            scene.addEntity(a);
-                        }
+            }
+            else if (6 >= rand) {
+                if (0 == Std.random(4)) {
+                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Health.WIDTH / 2, p.y - Health.HEIGHT / 2, Health.WIDTH, Health.HEIGHT))) {
+                        var h : Health = new Health(p);
+                        scene.addEntity(h);
                     }
                 }
                 else {
-                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Dog.WIDTH / 2, p.y - Dog.HEIGHT / 2, Dog.WIDTH, Dog.HEIGHT))) {
-                        var d : Dog = new Dog(p);
-                        scene.addEntity(d);
-                        this._evil -= 150;
-                        ++evilCount;
+                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Ammo.WIDTH / 2, p.y - Ammo.HEIGHT / 2, Ammo.WIDTH, Ammo.HEIGHT))) {
+                        var a : Ammo = new Ammo(p);
+                        scene.addEntity(a);
                     }
                 }
             }
+            else {
+                if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Dog.WIDTH / 2, p.y - Dog.HEIGHT / 2, Dog.WIDTH, Dog.HEIGHT))) {
+                    var d : Dog = new Dog(p);
+                    scene.addEntity(d);
+                    this._evil -= 150;
+                    ++evilCount;
+                }
+            }
+        }
+    }
+    
+    public function loot(scene : ALevel, position : Point) : Void
+    {
+        var r : Int = Std.random(6);
+        if (0 == r) {
+            scene.addEntity(new Health(position));
+        }
+        else {
+            scene.addEntity(new Ammo(position));
         }
     }
     

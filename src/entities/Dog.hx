@@ -33,12 +33,7 @@ class Dog extends AEntity
         SoundBank.instance.hit.play();
         if (0 >= health) {
             scene.director.score += 1;
-            if (0 == Std.random(4)) {
-                scene.addEntity(new Health(position));
-            }
-            else {
-                scene.addEntity(new Ammo(position));
-            }
+            scene.director.loot(scene, position);
             --scene.director.evilCount;
             dying = true;
         }
