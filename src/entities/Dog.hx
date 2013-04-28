@@ -83,7 +83,9 @@ class Dog extends AEntity
         var g : Graphics = this._figures.graphics;
         g.clear();
         g.beginFill((2 == health ? 0xF53D54 : 0xF55C38));
-        g.drawRect(-25, -10, 50, 20);
+        g.drawRect(-25, -10, 40, 20);
+        g.beginFill((2 == health ? 0xF53D54 : 0xF55C38));
+        g.drawRect(15, -7, 15, 14);
     }
     
     public override function clean() : Void
