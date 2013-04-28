@@ -12,6 +12,7 @@ class ScoreScreen extends AScene
 {
     private var _score : Int;
     private var _text : TextField;
+    private var _time : Int;
     
     public function new(score : Int)
     {
@@ -32,15 +33,21 @@ class ScoreScreen extends AScene
         this._text.y = 275;
         this._text.height = 100;
         addChild(this._text);
+        this._time = 0;
     }
     
     public override function update() : AScene
     {
-        for (k in keys) {
-            if (true == k) {
-                clean();
-                return new FirstLevel();
+        if (60 <= this._time) {
+            for (k in keys) {
+                if (true == k) {
+                    clean();
+                    return new FirstLevel();
+                }
             }
+        }
+        else {
+            ++this._time;
         }
         return this;
     }
