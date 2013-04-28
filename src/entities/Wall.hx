@@ -15,7 +15,8 @@ class Wall extends AEntity
     static inline public var WIDTH : Int = 40;
     static inline public var HEIGHT : Int = 40;
     
-    public var health(default, null) : Int;
+    public var health(default, default) : Int;
+    public var angle(default, default) : Float;
     private var _figures : Shape;
     
     public function new(position : Point)
@@ -24,6 +25,7 @@ class Wall extends AEntity
         this._figures = new Shape();
         addChild(this._figures);
         health = 3;
+        angle = 0;
     }
     
     public function takeHit(scene : ALevel) : Void
@@ -39,6 +41,7 @@ class Wall extends AEntity
     }
     public override function draw(scene : ALevel) : Void
     {
+        this._figures.rotation = angle * 180.0 / Math.PI;
         var g : Graphics = this._figures.graphics;
         g.clear();
         if (3 == health) {

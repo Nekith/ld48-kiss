@@ -19,6 +19,7 @@ class ALevel extends AScene
     public var director(default, null) : Director;
     public var player(default, null) : Player;
     public var actors(default, null) : Array<AEntity>;
+    private var _pause : Bool;
     private var _pauseText : TextField;
     
     public function new()
@@ -35,6 +36,7 @@ class ALevel extends AScene
         tf.font = "Verdana";
         tf.color = 0x00BFB7;
         tf.align = TextFormatAlign.CENTER;
+        this._pause = false;
         this._pauseText = new TextField();
         this._pauseText.defaultTextFormat = tf;
         this._pauseText.text = "ready ?";
@@ -82,7 +84,15 @@ class ALevel extends AScene
     
     public override function update() : AScene
     {
-        if (true == focus) {
+        if (true == this._pause) {
+            for (k in keys) {
+                if (true == k) {
+                    this._pause = false;
+                    break;
+                }
+            }
+        }
+        else if (true == focus) {
             player.update(this);
             if (0 == player.health) {
                 return new ScoreScreen(director.score);
@@ -106,6 +116,9 @@ class ALevel extends AScene
             }
             director.update(this);
         }
+        else {
+            this._pause = true;
+        }
         super.update();
         return this;
     }
@@ -116,7 +129,7 @@ class ALevel extends AScene
         for (entity in actors) {
             entity.draw(this);
         }
-        if (false == focus) {
+        if (false == focus || true == this._pause) {
             this._pauseText.visible = true;
         }
         else {

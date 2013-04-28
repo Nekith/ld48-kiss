@@ -49,7 +49,7 @@ class Director
         level = 1 + Math.floor(score / 10);
         if (25 > evilCount) {
             if (0 >= this._wave) {
-                this._evil = level * 600;
+                this._evil = level * 400;
                 this._good += this._evil - level * 50;
                 this._wave = 300 + level * 120 + Std.random(300);
             }

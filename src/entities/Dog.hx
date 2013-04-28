@@ -18,6 +18,7 @@ class Dog extends AEntity
     public var health(default, null) : Int;
     private var _figures : Shape;
     private var _angle : Float;
+    private var _bleeding : Int;
     
     public function new(position : Point)
     {
@@ -25,6 +26,7 @@ class Dog extends AEntity
         this._figures = new Shape();
         addChild(this._figures);
         health = 2;
+        this._bleeding = 0;
     }
     
     public function takeHit(scene : ALevel) : Void
@@ -48,8 +50,19 @@ class Dog extends AEntity
         position.x += force.x;
         position.y += force.y;
         super.update(scene);
-        // collision
         if (20 > this._dyingAnimation) {
+            // bleeding
+            if (1 == health) {
+                ++this._bleeding;
+                if (180 == this._bleeding) {
+                    scene.director.score += 1;
+                    scene.director.loot(scene, position);
+                    --scene.director.evilCount;
+                    dying = true;
+                    return;
+                }
+            }
+            // collision
             var entities : Array<AEntity> = scene.findEntities(rect);
             for (e in entities) {
                 if (true == Std.is(e, GoodProjectile) || true == Std.is(e, BadProjectile) || true == Std.is(e, Ammo) || true == Std.is(e, Health)) {

@@ -6,8 +6,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
-import entities.Ammo;
-import entities.Health;
+import entities.Wall;
 import entities.BadProjectile;
 
 class Turret extends AEntity
@@ -15,6 +14,7 @@ class Turret extends AEntity
     static inline public var WIDTH : Int = 40;
     static inline public var HEIGHT : Int = 40;
     
+    public var health(default, null) : Int;
     private var _figures : Shape;
     private var _angle : Float;
     private var _lastFire : Int;
@@ -26,15 +26,22 @@ class Turret extends AEntity
         addChild(this._figures);
         this._lastFire = 0;
         this._angle = 0;
+        health = 2;
     }
     
     public function takeHit(scene : ALevel) : Void
     {
+        --health;
         SoundBank.instance.hit.play();
-        scene.director.score += 1;
-        scene.director.loot(scene, position);
-        --scene.director.evilCount;
-        dying = true;
+        if (0 >= health) {
+            scene.director.score += 1;
+            var w : Wall = new Wall(position);
+            --w.health;
+            w.angle = _angle;
+            scene.addEntity(w);
+            --scene.director.evilCount;
+            dying = true;
+        }
     }
     
     public override function update(scene : ALevel) : Void
@@ -64,9 +71,9 @@ class Turret extends AEntity
         this._figures.rotation = _angle * 180.0 / Math.PI;
         var g : Graphics = this._figures.graphics;
         g.clear();
-        g.beginFill(0xF53D54);
+        g.beginFill((2 == health ? 0xF53D54 : 0xF55C38));
         g.drawRect(-20, -20, 40, 40);
-        g.beginFill(0xF53D54);
+        g.beginFill((2 == health ? 0xF53D54 : 0xF55C38));
         g.drawRect(20, -15, 15, 15);
     }
     
