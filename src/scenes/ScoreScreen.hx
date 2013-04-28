@@ -36,9 +36,11 @@ class ScoreScreen extends AScene
     
     public override function update() : AScene
     {
-        if (true == click) {
-            stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-            return new FirstLevel();
+        for (k in keys) {
+            if (true == k) {
+                clean();
+                return new FirstLevel();
+            }
         }
         return this;
     }

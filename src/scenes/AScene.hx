@@ -38,7 +38,7 @@ class AScene extends Sprite
         mouse = new Point(0, 0);
         click = false;
         keys = [];
-        focus = false;
+        focus = true;
     }
     
     public function onKeyDown(event : KeyboardEvent) : Void

@@ -36,7 +36,7 @@ class ALevel extends AScene
         tf.font = "Verdana";
         tf.color = 0x00BFB7;
         tf.align = TextFormatAlign.CENTER;
-        this._pause = false;
+        this._pause = true;
         this._pauseText = new TextField();
         this._pauseText.defaultTextFormat = tf;
         this._pauseText.text = "ready ?";
