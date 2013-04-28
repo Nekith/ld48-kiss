@@ -7,6 +7,7 @@ import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
 import entities.Ammo;
+import entities.Health;
 import entities.BadProjectile;
 
 class Turret extends AEntity
@@ -31,7 +32,12 @@ class Turret extends AEntity
     {
         SoundBank.instance.hit.play();
         scene.director.score += 1;
-        scene.addEntity(new Ammo(position));
+        if (0 == Std.random(4)) {
+            scene.addEntity(new Health(position));
+        }
+        else {
+            scene.addEntity(new Ammo(position));
+        }
         --scene.director.evilCount;
         dying = true;
     }

@@ -7,6 +7,7 @@ import entities.Turret;
 import entities.Dog;
 import entities.Wall;
 import entities.Ammo;
+import entities.Health;
 
 class Director
 {
@@ -14,7 +15,6 @@ class Director
     public var level(default, null) : Int;
     public var evilCount(default, default) : Int;
     private var _evil : Int;
-    private var _lastPopAmmo : Int;
     
     public function new()
     {
@@ -22,7 +22,6 @@ class Director
         level = 0;
         evilCount = 0;
         this._evil = 0;
-        this._lastPopAmmo = 0;
     }
     
     public function init(scene : ALevel)
@@ -46,8 +45,8 @@ class Director
             // entity
             while (150 <= this._evil) {
                 var p : Point = getRandomFreePoint(scene);
-                var rand : Int = Std.random(5);
-                if (1 >= rand) {
+                var rand : Int = Std.random(8);
+                if (2 >= rand) {
                     if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Turret.WIDTH / 2, p.y - Turret.HEIGHT / 2, Turret.WIDTH, Turret.HEIGHT))) {
                         var t : Turret = new Turret(p);
                         scene.addEntity(t);
@@ -55,11 +54,25 @@ class Director
                         ++evilCount;
                     }
                 }
-                else if (3 >= rand) {
+                else if (4 >= rand) {
                     if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Wall.WIDTH / 2, p.y - Wall.HEIGHT / 2, Wall.WIDTH, Wall.HEIGHT))) {
                         var w : Wall = new Wall(p);
                         scene.addEntity(w);
                         this._evil -= 100;
+                    }
+                }
+                else if (6 >= rand) {
+                    if (0 == Std.random(4)) {
+                        if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Health.WIDTH / 2, p.y - Health.HEIGHT / 2, Health.WIDTH, Health.HEIGHT))) {
+                            var h : Health = new Health(p);
+                            scene.addEntity(h);
+                        }
+                    }
+                    else {
+                        if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Ammo.WIDTH / 2, p.y - Ammo.HEIGHT / 2, Ammo.WIDTH, Ammo.HEIGHT))) {
+                            var a : Ammo = new Ammo(p);
+                            scene.addEntity(a);
+                        }
                     }
                 }
                 else {
@@ -70,23 +83,6 @@ class Director
                         ++evilCount;
                     }
                 }
-            }
-            // ammo
-            if (500 <= this._lastPopAmmo) {
-                var imax : Int = Std.random(3) + 1;
-                var i : Int = 0;
-                while (i < imax) {
-                    var p : Point = getRandomFreePoint(scene);
-                    if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Ammo.WIDTH / 2, p.y - Ammo.HEIGHT / 2, Ammo.WIDTH, Ammo.HEIGHT))) {
-                        var a : Ammo = new Ammo(p);
-                        scene.addEntity(a);
-                        ++i;
-                    }
-                }
-                this._lastPopAmmo = 0;
-            }
-            else {
-                ++this._lastPopAmmo;
             }
         }
     }

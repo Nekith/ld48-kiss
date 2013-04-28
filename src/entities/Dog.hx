@@ -7,6 +7,7 @@ import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
 import entities.Ammo;
+import entities.Health;
 import SoundBank;
 
 class Dog extends AEntity
@@ -32,7 +33,12 @@ class Dog extends AEntity
         SoundBank.instance.hit.play();
         if (0 >= health) {
             scene.director.score += 1;
-            scene.addEntity(new Ammo(position));
+            if (0 == Std.random(4)) {
+                scene.addEntity(new Health(position));
+            }
+            else {
+                scene.addEntity(new Ammo(position));
+            }
             --scene.director.evilCount;
             dying = true;
         }
@@ -51,7 +57,7 @@ class Dog extends AEntity
             // collision
             var entities : Array<AEntity> = scene.findEntities(rect);
             for (e in entities) {
-                if (true == Std.is(e, GoodProjectile) || true == Std.is(e, BadProjectile) || true == Std.is(e, Ammo)) {
+                if (true == Std.is(e, GoodProjectile) || true == Std.is(e, BadProjectile) || true == Std.is(e, Ammo) || true == Std.is(e, Health)) {
                     continue;
                 }
                 if (Math.abs(e.position.x - position.x) < Math.abs(e.position.y - position.y)) {

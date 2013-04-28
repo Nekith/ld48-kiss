@@ -8,6 +8,7 @@ import flash.media.Sound;
 @:sound("library/wall.wav") class WallSound extends Sound { }
 @:sound("library/enemy.wav") class EnemySound extends Sound { }
 @:sound("library/hit.wav") class HitSound extends Sound { }
+@:sound("library/health.wav") class HealthSound extends Sound { }
 
 class SoundBank
 {
@@ -19,6 +20,7 @@ class SoundBank
     public var wall(default, null) : WallSound;
     public var enemy(default, null) : EnemySound;
     public var hit(default, null) : HitSound;
+    public var health(default, null) : HealthSound;
     
     public function new()
     {
@@ -28,5 +30,6 @@ class SoundBank
         wall = new WallSound();
         enemy = new EnemySound();
         hit = new HitSound();
+        health = new HealthSound();
     }
 }

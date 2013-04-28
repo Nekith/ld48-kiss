@@ -6,6 +6,8 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
+import entities.Ammo;
+import entities.Health;
 import SoundBank;
 
 class Wall extends AEntity
@@ -31,7 +33,12 @@ class Wall extends AEntity
         if (0 >= health) {
             scene.director.score += 1;
             scene.removeEntity(this);
-            scene.addEntity(new Ammo(position));
+            if (0 == Std.random(4)) {
+                scene.addEntity(new Health(position));
+            }
+            else {
+                scene.addEntity(new Ammo(position));
+            }
             clean();
         }
     }
