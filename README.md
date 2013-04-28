@@ -1,4 +1,4 @@
-# Keep It Simple, Shooter !
+# SSSS : Super Simple Stupid Shooter
 
 Ludum Dare 26 entry, ok, let's do this !
 
