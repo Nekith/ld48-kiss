@@ -29,7 +29,7 @@ class Director
     {
         var i : Int = 0;
         while (i < 30) {
-            var p : Point = new Point(Std.random(Std.int(scene.dimension.x)), Std.random(Std.int(scene.dimension.y)));
+            var p : Point = new Point(40 + Std.random(Std.int(scene.dimension.x) - 80), 40 + Std.random(Std.int(scene.dimension.y) - 80));
             if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Wall.WIDTH / 2, p.y - Wall.HEIGHT / 2, Wall.WIDTH, Wall.HEIGHT))) {
                 var w : Wall = new Wall(p);
                 scene.addEntity(w);
@@ -40,7 +40,7 @@ class Director
     
     public function update(scene : ALevel)
     {
-        level = 1 + Math.floor(score / 15);
+        level = 1 + Math.floor(score / 18);
         if (30 > evilCount) {
             this._evil += level;
             // entity
@@ -94,17 +94,31 @@ class Director
     public function getRandomFreePoint(scene : ALevel) : Point
     {
         var p : Point = new Point();
+        // x
         if (scene.player.position.x - 400 <= 0 || 0 == Std.random(2)) {
-            p.x = scene.player.position.x + 400 + 40 + Std.random(Std.int(scene.dimension.x - scene.player.position.x - 400 - 40));
+            p.x = scene.player.position.x + 400 + Std.random(Std.int(scene.dimension.x - scene.player.position.x - 400));
         }
         else {
-            p.x = 40 + Std.random(Std.int(scene.player.position.x - 400 - 40));
+            p.x = Std.random(Std.int(scene.player.position.x - 400));
         }
+        if (p.x <= 0) {
+            p.x = 40;
+        }
+        else if (p.x >= scene.dimension.x) {
+            p.x = scene.dimension.x - 40;
+        }
+        // y
         if (scene.player.position.y - 300 <= 0 || 0 == Std.random(2)) {
-            p.y = scene.player.position.y + 300 + 40 + Std.random(Std.int(scene.dimension.y - scene.player.position.y - 300 - 40));
+            p.y = scene.player.position.y + 300 + Std.random(Std.int(scene.dimension.y - scene.player.position.y - 300));
         }
         else {
-            p.y = 40 + Std.random(Std.int(scene.player.position.y - 300 - 40));
+            p.y = Std.random(Std.int(scene.player.position.y - 300));
+        }
+        if (p.y <= 0) {
+            p.y = 40;
+        }
+        else if (p.y >= scene.dimension.y) {
+            p.y = scene.dimension.y - 40;
         }
         return p;
     }

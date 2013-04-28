@@ -7,6 +7,7 @@ import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
 import entities.Player;
+import SoundBank;
 
 class Ammo extends AEntity
 {
@@ -36,15 +37,17 @@ class Ammo extends AEntity
         position.y += force.y;
         super.update(scene);
         this._angle = (this._angle + 3 % 360);
-        if (rect.x + rect.width <= 0 || rect.x >= scene.dimension.x || rect.y + rect.height <= 0 || rect.y >= scene.dimension.y) {
-            scene.removeEntity(this);
-            this.clean();
-        }
-        else {
-            if (true == scene.player.rect.intersects(rect)) {
-                if (true == scene.player.pickAmmo(scene)) {
-                    scene.removeEntity(this);
-                    this.clean();
+        if (false == dying) {
+            if (rect.x + rect.width <= 0 || rect.x >= scene.dimension.x || rect.y + rect.height <= 0 || rect.y >= scene.dimension.y) {
+                scene.removeEntity(this);
+                this.clean();
+            }
+            else {
+                if (true == scene.player.rect.intersects(rect)) {
+                    if (true == scene.player.pickAmmo(scene)) {
+                        SoundBank.instance.pick.play();
+                        this.dying = true;
+                    }
                 }
             }
         }

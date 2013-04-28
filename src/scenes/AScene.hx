@@ -13,12 +13,13 @@ import flash.Lib;
 
 class AScene extends Sprite
 {
-    private var _currentTime : Float = 0;
-    private var _accumulator : Float = 0;
     public var dimension(default, null) : Point;
     public var mouse(default, null) : Point;
     public var click(default, null) : Bool;
     public var keys(default, null) : Array<Bool>;
+    public var focus(default, null) : Bool;
+    private var _currentTime : Float = 0;
+    private var _accumulator : Float = 0;
     
     public function new()
     {
@@ -30,11 +31,14 @@ class AScene extends Sprite
         stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
         stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
         stage.addEventListener(Event.ENTER_FRAME, onEnter);
+        stage.addEventListener(Event.DEACTIVATE, onDeactivate);
+        stage.addEventListener(Event.ACTIVATE, onActivate);
         _currentTime = Timer.stamp();
         dimension = new Point(512, 320);
         mouse = new Point(0, 0);
         click = false;
         keys = [];
+        focus = false;
     }
     
     public function onKeyDown(event : KeyboardEvent) : Void
@@ -65,7 +69,7 @@ class AScene extends Sprite
         click = false;
     }
     
-    public function onEnter(event : flash.events.Event) : Void
+    public function onEnter(event : Event) : Void
     {
         var newTime : Float = Timer.stamp();
         var frameTime : Float = newTime - _currentTime;
@@ -81,6 +85,8 @@ class AScene extends Sprite
                 stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
                 stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
                 stage.removeEventListener(Event.ENTER_FRAME, onEnter);
+                stage.removeEventListener(Event.DEACTIVATE, onDeactivate);
+                stage.removeEventListener(Event.ACTIVATE, onActivate);
                 Lib.current.removeChild(this);
                 Lib.current.addChild(scene);
                 return;
@@ -88,6 +94,16 @@ class AScene extends Sprite
             _accumulator -= 1 / 60.0;
         }
         draw();
+    }
+    
+    public function onDeactivate(event : Event) : Void
+    {
+        focus = false;
+    }
+    
+    public function onActivate(event : Event) : Void
+    {
+        focus = true;
     }
     
     public function update() : AScene

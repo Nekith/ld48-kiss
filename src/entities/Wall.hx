@@ -6,6 +6,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
+import SoundBank;
 
 class Wall extends AEntity
 {
@@ -26,6 +27,7 @@ class Wall extends AEntity
     public function takeHit(scene : ALevel) : Void
     {
         --health;
+        SoundBank.instance.wall.play();
         if (0 >= health) {
             scene.director.score += 1;
             scene.removeEntity(this);

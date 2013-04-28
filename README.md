@@ -9,9 +9,8 @@ Ludum Dare 26 entry, ok, let's do this !
 
 ## Todo
 
-* dying animation, scaling to 0 ?
-* shooting sounds
-* dying/popping sounds
+* lost focus
+
 * first screen (super simple, écran gris comme le fond de jeu, press start, c'tout)
 
 * poping animation ?

@@ -7,6 +7,7 @@ import flash.geom.Rectangle;
 import scenes.ALevel;
 import entities.AEntity;
 import entities.Ammo;
+import SoundBank;
 
 class Dog extends AEntity
 {
@@ -28,12 +29,12 @@ class Dog extends AEntity
     public function takeHit(scene : ALevel) : Void
     {
         --health;
+        SoundBank.instance.hit.play();
         if (0 >= health) {
             scene.director.score += 1;
-            scene.removeEntity(this);
             scene.addEntity(new Ammo(position));
             --scene.director.evilCount;
-            clean();
+            dying = true;
         }
     }
     
@@ -46,30 +47,32 @@ class Dog extends AEntity
         position.x += force.x;
         position.y += force.y;
         super.update(scene);
-        // collision
-        var entities : Array<AEntity> = scene.findEntities(rect);
-        for (e in entities) {
-            if (true == Std.is(e, GoodProjectile) || true == Std.is(e, BadProjectile) || true == Std.is(e, Ammo)) {
-                continue;
+        if (20 > this._dyingAnimation) {
+            // collision
+            var entities : Array<AEntity> = scene.findEntities(rect);
+            for (e in entities) {
+                if (true == Std.is(e, GoodProjectile) || true == Std.is(e, BadProjectile) || true == Std.is(e, Ammo)) {
+                    continue;
+                }
+                if (Math.abs(e.position.x - position.x) < Math.abs(e.position.y - position.y)) {
+                    if (e.rect.y + e.rect.height >= rect.y && e.rect.y < rect.y) {
+                        position.y += e.rect.y + e.rect.height - rect.y;
+                    }
+                    else if (e.rect.y <= rect.y + rect.height && e.rect.y > rect.y) {
+                        position.y -= rect.y + rect.height - e.rect.y;
+                    }
+                }
+                else {
+                    if (e.rect.x + e.rect.width >= rect.x && e.rect.x < rect.x) {
+                        position.x += e.rect.x + e.rect.width - rect.x;
+                    }
+                    else if (e.rect.x <= rect.x + rect.width && e.rect.x > rect.x) {
+                        position.x -= rect.x + rect.width - e.rect.x;
+                    }
+                }
             }
-            if (Math.abs(e.position.x - position.x) < Math.abs(e.position.y - position.y)) {
-                if (e.rect.y + e.rect.height >= rect.y && e.rect.y < rect.y) {
-                    position.y += e.rect.y + e.rect.height - rect.y;
-                }
-                else if (e.rect.y <= rect.y + rect.height && e.rect.y > rect.y) {
-                    position.y -= rect.y + rect.height - e.rect.y;
-                }
-            }
-            else {
-                if (e.rect.x + e.rect.width >= rect.x && e.rect.x < rect.x) {
-                    position.x += e.rect.x + e.rect.width - rect.x;
-                }
-                else if (e.rect.x <= rect.x + rect.width && e.rect.x > rect.x) {
-                    position.x -= rect.x + rect.width - e.rect.x;
-                }
-            }
+            super.update(scene);
         }
-        super.update(scene);
     }
     
     public override function draw(scene : ALevel) : Void

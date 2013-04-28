@@ -29,7 +29,7 @@ class ScoreScreen extends AScene
         this._text.textColor = 0x00BFB7;
         this._text.x = 300;
         this._text.width = 200;
-        this._text.y = 250;
+        this._text.y = 275;
         this._text.height = 100;
         addChild(this._text);
     }

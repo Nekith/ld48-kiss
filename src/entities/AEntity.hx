@@ -11,7 +11,9 @@ class AEntity extends Sprite
     public var position(default, null) : Point;
     public var rect(default, null) : Rectangle;
     public var force(default, null) : Point;
+    public var dying(default, null) : Bool;
     private var _canEscapeLevel : Bool;
+    private var _dyingAnimation : Int;
     
     public function new(rect : Rectangle)
     {
@@ -21,6 +23,7 @@ class AEntity extends Sprite
         x = position.x;
         y = position.y;
         force = new Point(0, 0);
+        dying = false;
         _canEscapeLevel = false;
     }
     
@@ -44,12 +47,21 @@ class AEntity extends Sprite
             position.x = rect.x + rect.width / 2;
             position.y = rect.y + rect.height / 2;
         }
+        if (20 <= this._dyingAnimation) {
+            scene.removeEntity(this);
+            clean();
+        }
     }
     
     public function draw(scene : ALevel) : Void
     {
         x = position.x;
         y = position.y;
+        if (true == dying) {
+            this.scaleX = 1.0 - this._dyingAnimation * 0.05;
+            this.scaleY = 1.0 - this._dyingAnimation * 0.05;
+            ++this._dyingAnimation;
+        }
     }
     
     public function clean() : Void

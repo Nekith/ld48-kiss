@@ -10,6 +10,7 @@ import entities.AEntity;
 import entities.Wall;
 import entities.GoodProjectile;
 import entities.BadProjectile;
+import SoundBank;
 
 class Player extends AEntity
 {
@@ -106,22 +107,18 @@ class Player extends AEntity
                 this._wasFiring = true;
                 var projectile : GoodProjectile = new GoodProjectile(new Point(position.x - 4, position.y), angle);
                 scene.addEntity(projectile);
+                SoundBank.instance.shoot.play();
             }
         }
         else {
             this._wasFiring = false;
-        }
-        if (30 > ammo && true == scene.keys[Keyboard.P]) {
-            ++ammo;
-        }
-        if (true == scene.keys[Keyboard.K]) {
-            health = Std.random(5);
         }
     }
     
     public function takeHit(scene : ALevel) : Void
     {
         --health;
+        SoundBank.instance.hurt.play();
     }
     
     public function pickAmmo(scene : ALevel) : Bool
@@ -150,7 +147,7 @@ class Player extends AEntity
         // draw health
         for (i in 0...health - 1) {
             g.beginFill(0x00BFB7);
-            g.drawCircle(Math.cos(Math.PI / 6 * i) * (10 + ammo), Math.sin(Math.PI / 6 * i) * (10 + ammo), 3);
+            g.drawCircle(Math.cos(Math.PI / 6 * i) * (10 + ammo), Math.sin(Math.PI / 6 * i) * (10 + ammo), 4);
         }
     }
     
