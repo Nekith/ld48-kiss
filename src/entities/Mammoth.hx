@@ -4,55 +4,59 @@ import flash.display.Shape;
 import flash.display.Graphics;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import haxe.Log;
 import scenes.ALevel;
 import entities.AEntity;
 import entities.Ammo;
 import entities.Health;
-import SoundBank;
+import entities.GoodProjectile;
+import entities.BadProjectile;
 
-class Dog extends AEntity
+class Mammoth extends AEntity
 {
-    static inline public var WIDTH : Int = 50;
-    static inline public var HEIGHT : Int = 20;
+    static inline public var WIDTH : Int = 30;
+    static inline public var HEIGHT : Int = 50;
     
-    public var health(default, null) : Int;
     private var _figures : Shape;
     private var _angle : Float;
+    private var _count : Int;
     
     public function new(position : Point)
     {
-        super(new Rectangle(position.x - Dog.WIDTH / 2, position.y - Dog.HEIGHT / 2, Dog.WIDTH, Dog.HEIGHT));
+        super(new Rectangle(position.x - Mammoth.WIDTH / 2, position.y - Mammoth.HEIGHT / 2, Mammoth.WIDTH, Mammoth.HEIGHT));
         this._figures = new Shape();
         addChild(this._figures);
-        health = 2;
+        this._count = 0;
+        this._angle = 0;
     }
     
     public function takeHit(scene : ALevel) : Void
     {
-        --health;
         SoundBank.instance.hit.play();
-        if (0 >= health) {
-            scene.director.score += 1;
-            scene.director.loot(scene, position);
-            --scene.director.evilCount;
-            dying = true;
-        }
+        scene.director.score += 1;
+        scene.director.loot(scene, position);
+        --scene.director.evilCount;
+        dying = true;
     }
     
     public override function update(scene : ALevel) : Void
     {
         // movement
-        this._angle = Math.atan2(scene.player.position.y - position.y, scene.player.position.x - position.x);
-        force.x = Math.cos(_angle) * (2 == health ? 3 : 4);
-        force.y = Math.sin(_angle) * (2 == health ? 3 : 4);
-        position.x += force.x;
-        position.y += force.y;
+        if (0 == this._count) {
+            force.x = (0 == Std.random(2) ? -3 : 3) * Math.random();
+            force.y = (0 == Std.random(2) ? -3 : 3) * Math.random();
+        }
+        else if (120 > this._count) {
+            position.x += force.x;
+            position.y += force.y;
+        }
         super.update(scene);
-        // collision
-        if (20 > this._dyingAnimation) {
-            var entities : Array<AEntity> = scene.findEntities(rect);
-            for (e in entities) {
-                if (true == Std.is(e, GoodProjectile) || true == Std.is(e, BadProjectile) || true == Std.is(e, Ammo) || true == Std.is(e, Health)) {
+        if (false == dying) {
+            this._angle = Math.atan2(scene.player.position.y - position.y, scene.player.position.x - position.x);
+            // collision
+            var ent : Array<AEntity> = scene.findEntities(rect);
+            for (e in ent) {
+                if (e == this || true == Std.is(e, GoodProjectile) || true == Std.is(e, BadProjectile) || true == Std.is(e, Ammo) || true == Std.is(e, Health)) {
                     continue;
                 }
                 if (Math.abs(e.position.x - position.x) < Math.abs(e.position.y - position.y)) {
@@ -73,6 +77,18 @@ class Dog extends AEntity
                 }
             }
             super.update(scene);
+            // fire
+            if (150 <= this._count) {
+                if (400 >= Math.abs(scene.player.position.y - position.y) && 400 >= Math.abs(scene.player.position.x - position.x)) {
+                    var projectile : BadProjectile = new BadProjectile(new Point(position.x, position.y), this._angle);
+                    scene.addEntity(projectile);
+                    SoundBank.instance.enemy.play();
+                }
+                this._count = 0;
+            }
+            else {
+                ++this._count;
+            }
         }
     }
     
@@ -82,10 +98,8 @@ class Dog extends AEntity
         this._figures.rotation = _angle * 180.0 / Math.PI;
         var g : Graphics = this._figures.graphics;
         g.clear();
-        g.beginFill((2 == health ? 0xF53D54 : 0xF55C38));
-        g.drawRect(-25, -10, 40, 20);
-        g.beginFill((2 == health ? 0xF53D54 : 0xF55C38));
-        g.drawRect(15, -7, 15, 14);
+        g.beginFill(0xF53D54);
+        g.drawRect(-15, -25, 30, 50);
     }
     
     public override function clean() : Void

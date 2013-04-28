@@ -13,7 +13,7 @@ import entities.BadProjectile;
 class Turret extends AEntity
 {
     static inline public var WIDTH : Int = 40;
-    static inline public var HEIGHT : Int  = 40;
+    static inline public var HEIGHT : Int = 40;
     
     private var _figures : Shape;
     private var _angle : Float;

@@ -13,7 +13,7 @@ import SoundBank;
 class Wall extends AEntity
 {
     static inline public var WIDTH : Int = 40;
-    static inline public var HEIGHT : Int  = 40;
+    static inline public var HEIGHT : Int = 40;
     
     public var health(default, null) : Int;
     private var _figures : Shape;

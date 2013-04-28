@@ -18,7 +18,7 @@ class ALevel extends AScene
 {
     public var director(default, null) : Director;
     public var player(default, null) : Player;
-    public var entities(default, null) : Array<AEntity>;
+    public var actors(default, null) : Array<AEntity>;
     private var _pauseText : TextField;
     
     public function new()
@@ -28,7 +28,7 @@ class ALevel extends AScene
         dimension = new Point(1200, 1200);
         player = new Player(new Point(600.0, 600.0));
         addChild(player);
-        entities = [];
+        actors = [];
         director.init(this);
         var tf : TextFormat = new TextFormat();
         tf.size = 24;
@@ -50,7 +50,7 @@ class ALevel extends AScene
     public function findEntities(rect : Rectangle) : Array<AEntity>
     {
         var results : Array<AEntity> = new Array<AEntity>();
-        for (entity in entities) {
+        for (entity in actors) {
             if (false == entity.dying && true == rect.intersects(entity.rect)) {
                 results.push(entity);
             }
@@ -60,7 +60,7 @@ class ALevel extends AScene
     
     public function checkPlaceIsFree(rect : Rectangle) : Bool
     {
-        for (entity in entities) {
+        for (entity in actors) {
             if (false == entity.dying && true == rect.intersects(entity.rect)) {
                 return false;
             }
@@ -71,13 +71,13 @@ class ALevel extends AScene
     public function addEntity(entity : AEntity) : Void
     {
         addChild(entity);
-        entities.push(entity);
+        actors.push(entity);
     }
     
     public function removeEntity(entity : AEntity) : Void
     {
         removeChild(entity);
-        entities.remove(entity);
+        actors.remove(entity);
     }
     
     public override function update() : AScene
@@ -87,7 +87,7 @@ class ALevel extends AScene
             if (0 == player.health) {
                 return new ScoreScreen(director.score);
             }
-            for (entity in entities) {
+            for (entity in actors) {
                 entity.update(this);
             }
             x = 400 - player.rect.x + player.rect.width / 2;
@@ -113,7 +113,7 @@ class ALevel extends AScene
     public override function draw() : Void
     {
         player.draw(this);
-        for (entity in entities) {
+        for (entity in actors) {
             entity.draw(this);
         }
         if (false == focus) {
@@ -129,7 +129,7 @@ class ALevel extends AScene
     {
         removeChild(player);
         player.clean();
-        for (entity in entities) {
+        for (entity in actors) {
             entity.clean();
         }
         Lib.current.removeChild(this._pauseText);

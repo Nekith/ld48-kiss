@@ -12,7 +12,7 @@ import SoundBank;
 class Health extends AEntity
 {
     static inline public var WIDTH : Int = 24;
-    static inline public var HEIGHT : Int  = 24;
+    static inline public var HEIGHT : Int = 24;
     
     private var _figures : Shape;
     private var _count : Int;
