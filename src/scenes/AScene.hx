@@ -77,6 +77,9 @@ class AScene extends Sprite
                 var stage = Lib.current.stage;
                 stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
                 stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+                stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+                stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+                stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
                 stage.removeEventListener(Event.ENTER_FRAME, onEnter);
                 Lib.current.removeChild(this);
                 Lib.current.addChild(scene);

@@ -12,6 +12,7 @@ class Director
 {
     public var score(default, default) : Int;
     public var level(default, null) : Int;
+    public var evilCount(default, default) : Int;
     private var _evil : Int;
     private var _lastPopAmmo : Int;
     
@@ -19,6 +20,7 @@ class Director
     {
         score = 0;
         level = 0;
+        evilCount = 0;
         this._evil = 0;
         this._lastPopAmmo = 0;
     }
@@ -38,18 +40,19 @@ class Director
     
     public function update(scene : ALevel)
     {
-        level = 1 + Math.floor(score / 10);
-        if (50 > scene.entities.length) {
+        level = 1 + Math.floor(score / 15);
+        if (30 > evilCount) {
             this._evil += level;
             // entity
-            while (500 <= this._evil) {
+            while (150 <= this._evil) {
                 var p : Point = getRandomFreePoint(scene);
                 var rand : Int = Std.random(5);
                 if (1 >= rand) {
                     if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Turret.WIDTH / 2, p.y - Turret.HEIGHT / 2, Turret.WIDTH, Turret.HEIGHT))) {
                         var t : Turret = new Turret(p);
                         scene.addEntity(t);
-                        this._evil -= 100;
+                        this._evil -= 150;
+                        ++evilCount;
                     }
                 }
                 else if (3 >= rand) {
@@ -63,12 +66,13 @@ class Director
                     if (true == scene.checkPlaceIsFree(new Rectangle(p.x - Dog.WIDTH / 2, p.y - Dog.HEIGHT / 2, Dog.WIDTH, Dog.HEIGHT))) {
                         var d : Dog = new Dog(p);
                         scene.addEntity(d);
-                        this._evil -= 100;
+                        this._evil -= 150;
+                        ++evilCount;
                     }
                 }
             }
             // ammo
-            if (300 <= this._lastPopAmmo) {
+            if (500 <= this._lastPopAmmo) {
                 var imax : Int = Std.random(3) + 1;
                 var i : Int = 0;
                 while (i < imax) {
@@ -91,16 +95,16 @@ class Director
     {
         var p : Point = new Point();
         if (scene.player.position.x - 400 <= 0 || 0 == Std.random(2)) {
-            p.x = scene.player.position.x + 400 + Std.random(Std.int(scene.dimension.x - scene.player.position.x - 400));
+            p.x = scene.player.position.x + 400 + 40 + Std.random(Std.int(scene.dimension.x - scene.player.position.x - 400 - 40));
         }
         else {
-            p.x = Std.random(Std.int(scene.player.position.x - 400));
+            p.x = 40 + Std.random(Std.int(scene.player.position.x - 400 - 40));
         }
         if (scene.player.position.y - 300 <= 0 || 0 == Std.random(2)) {
-            p.y = scene.player.position.y + 300 + Std.random(Std.int(scene.dimension.y - scene.player.position.y - 300));
+            p.y = scene.player.position.y + 300 + 40 + Std.random(Std.int(scene.dimension.y - scene.player.position.y - 300 - 40));
         }
         else {
-            p.y = Std.random(Std.int(scene.player.position.y - 300));
+            p.y = 40 + Std.random(Std.int(scene.player.position.y - 300 - 40));
         }
         return p;
     }

@@ -9,9 +9,10 @@ Ludum Dare 26 entry, ok, let's do this !
 
 ## Todo
 
-* end score screen
-* first screen
 * dying animation, scaling to 0 ?
+* shooting sounds
+* dying/popping sounds
+* first screen (super simple, écran gris comme le fond de jeu, press start, c'tout)
 
 * poping animation ?
 * other power ups ? health ? invincibility ? machine gun ?

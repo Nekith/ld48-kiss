@@ -32,6 +32,7 @@ class Turret extends AEntity
         scene.director.score += 1;
         scene.removeEntity(this);
         scene.addEntity(new Ammo(position));
+        --scene.director.evilCount;
         clean();
     }
     
@@ -41,10 +42,12 @@ class Turret extends AEntity
         position.y += force.y;
         super.update(scene);
         this._angle = Math.atan2(scene.player.position.y - position.y, scene.player.position.x - position.x);
-        if (120 == this._lastFire) {
-            var projectile : BadProjectile = new BadProjectile(new Point(position.x + 15, position.y - 20), _angle);
-            scene.addEntity(projectile);
-            this._lastFire = 0;
+        if (120 <= this._lastFire) {
+            if (400 >= Math.abs(scene.player.position.y - position.y) && 400 >= Math.abs(scene.player.position.x - position.x)) {
+                var projectile : BadProjectile = new BadProjectile(new Point(position.x + 15, position.y - 20), _angle);
+                scene.addEntity(projectile);
+                this._lastFire = 0;
+            }
         }
         else {
             ++this._lastFire;

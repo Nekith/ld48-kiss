@@ -32,6 +32,7 @@ class Dog extends AEntity
             scene.director.score += 1;
             scene.removeEntity(this);
             scene.addEntity(new Ammo(position));
+            --scene.director.evilCount;
             clean();
         }
     }
