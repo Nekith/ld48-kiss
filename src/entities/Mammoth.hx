@@ -99,7 +99,11 @@ class Mammoth extends AEntity
         var g : Graphics = this._figures.graphics;
         g.clear();
         g.beginFill(0xF53D54);
-        g.drawRect(-15, -25, 30, 50);
+        g.drawRect(-15, -20, 30, 40);
+        g.beginFill(0xF53D54);
+        g.drawRect(-5, -25, 10, 5);
+        g.beginFill(0xF53D54);
+        g.drawRect(-5, 20, 10, 5);
     }
     
     public override function clean() : Void
