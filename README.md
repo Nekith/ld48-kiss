@@ -1,4 +1,4 @@
-# SSSS : Super Simple Smart Shooter
+# Super Simple Smart Shooter
 
 * Newgrounds : http://www.newgrounds.com/portal/view/616464
 
