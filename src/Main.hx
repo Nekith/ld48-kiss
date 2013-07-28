@@ -18,6 +18,7 @@ class Main extends Sprite
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;
         // entry point
+        SoundBank.init();
         Lib.current.addChild(new FirstLevel());
         Mouse.hide();
         Lib.current.addChild(new Main());

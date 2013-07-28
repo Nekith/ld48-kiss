@@ -12,7 +12,7 @@ import flash.media.Sound;
 
 class SoundBank
 {
-    static public inline var instance : SoundBank = new SoundBank();
+    static public var instance : SoundBank = null;
     
     public var hurt(default, null) : HurtSound;
     public var pick(default, null) : PickSound;
@@ -31,5 +31,10 @@ class SoundBank
         enemy = new EnemySound();
         hit = new HitSound();
         health = new HealthSound();
+    }
+    
+    static public function init()
+    {
+        SoundBank.instance = new SoundBank();
     }
 }
