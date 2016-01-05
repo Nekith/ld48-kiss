@@ -1,5 +1,7 @@
 # Super Simple Smart Shooter
 
+[![Join the chat at https://gitter.im/Nekith/ld48-kiss](https://badges.gitter.im/Nekith/ld48-kiss.svg)](https://gitter.im/Nekith/ld48-kiss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 * Newgrounds : http://www.newgrounds.com/portal/view/616464
 
 Ludum Dare #26 entry, ok, let's do this !
